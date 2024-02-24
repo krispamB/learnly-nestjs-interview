@@ -1,0 +1,6 @@
+node_module
+test
+.gitignore
+.git
+.prettierrc
+README.md

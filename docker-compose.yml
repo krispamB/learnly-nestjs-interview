@@ -1,0 +1,32 @@
+services:
+  mongo_db:
+    image: mongo:latest
+    restart: always
+    ports: 
+      - 27017:27017
+    volumes:
+      - ./mongodb_data:/data/db 
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongouser
+      - MONGO_INITDB_ROOT_PASSWORD=mongopassword
+      - MONGO_INITDB_DATABASE=learnlyAccounts
+  nestjs-api: 
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on: 
+      - mongo_db  
+    environment:
+      - PORT=3000
+      - NODE_ENV=DEVELOPEMENT
+      - DATABASE_URL=mongodb://mongouser:mongopassword@mongo_db:27017/learnlyAccounts?authSource=admin
+    volumes:
+      - ./src:/usr/src/app/src
+
+volumes:
+  mongodb_data:
+
+
+
